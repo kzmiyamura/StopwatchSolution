@@ -1,4 +1,15 @@
 <Solution>
-  <Project Path="StopwatchConsole/StopwatchConsole.csproj" />
-  <Project Path="StopwatchLogic/StopwatchLogic.csproj" />
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="ARM64" />
+  </Configurations>
+  <Project Path="StopwatchConsole/StopwatchConsole.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+  </Project>
+  <Project Path="StopwatchLogic/StopwatchLogic.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+  </Project>
+  <Project Path="StopwatchWpf/StopwatchWpf.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+  </Project>
 </Solution>
