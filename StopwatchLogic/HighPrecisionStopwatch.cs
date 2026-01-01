@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace StopwatchConsole.StopwatchLogic
+namespace StopwatchLogic
 {
     public class HighPrecisionStopwatch
     {

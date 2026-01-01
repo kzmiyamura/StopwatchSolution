@@ -1,4 +1,4 @@
-﻿using StopwatchConsole.StopwatchLogic;
+﻿using StopwatchLogic;
 using System;
 using System.Threading;
 

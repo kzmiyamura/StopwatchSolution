@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace StopwatchConsole.StopwatchLogic
+namespace StopwatchLogic
 {
     public class HighPrecisionStopwatchV2
     {

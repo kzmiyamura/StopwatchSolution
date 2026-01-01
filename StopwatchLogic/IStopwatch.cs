@@ -1,5 +1,5 @@
 ﻿// IStopwatch.cs
-namespace StopwatchConsole.StopwatchLogic
+namespace StopwatchLogic
 {
     public interface IStopwatch
     {
