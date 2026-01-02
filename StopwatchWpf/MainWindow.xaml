@@ -1,12 +1,9 @@
 ﻿<Window x:Class="StopwatchWpf.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="clr-namespace:StopwatchWpf.ViewModels"
-        Title="Stopwatch" Height="250" Width="300">
-
-    <Window.DataContext>
-        <vm:MainViewModel />
-    </Window.DataContext>
+        Title="Stopwatch"
+        Height="250"
+        Width="300">
 
     <StackPanel Margin="20" VerticalAlignment="Center">
 

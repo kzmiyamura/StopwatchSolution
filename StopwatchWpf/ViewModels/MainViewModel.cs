@@ -1,4 +1,6 @@
-﻿using StopwatchLogic;
+﻿using Microsoft.Extensions.Options;
+using StopwatchLogic;
+using StopwatchWpf.Settings;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -11,6 +13,7 @@ namespace StopwatchWpf.ViewModels
     {
         private readonly IStopwatch _stopwatch;
         private readonly DispatcherTimer _timer;
+        private readonly int _intervalMs;
 
         private string _elapsedText = "00:00.0";
         public string ElapsedText
@@ -27,13 +30,16 @@ namespace StopwatchWpf.ViewModels
         public ICommand StopCommand { get; }
         public ICommand ResetCommand { get; }
 
-        public MainViewModel()
+        public MainViewModel(
+            IStopwatch stopwatch,
+            IOptions<StopwatchSettings> settings)
         {
-            _stopwatch = new HighPrecisionStopwatchV2();
+            _stopwatch = stopwatch;
+            _intervalMs = settings.Value.UpdateIntervalMs;
 
             _timer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(100)
+                Interval = TimeSpan.FromMilliseconds(_intervalMs)
             };
             _timer.Tick += (_, _) => UpdateTime();
 

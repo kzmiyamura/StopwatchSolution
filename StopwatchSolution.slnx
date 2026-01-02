@@ -9,6 +9,7 @@
   <Project Path="StopwatchLogic/StopwatchLogic.csproj">
     <Platform Solution="*|ARM64" Project="ARM64" />
   </Project>
+  <Project Path="StopwatchWpf.Tests/StopwatchWpf.Tests.csproj" Id="574b0f6a-b93c-4e0c-b8f6-641423dd4c70" />
   <Project Path="StopwatchWpf/StopwatchWpf.csproj">
     <Platform Solution="*|ARM64" Project="ARM64" />
   </Project>
