@@ -1,18 +1,21 @@
 ﻿<Window x:Class="StopwatchWpf.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Stopwatch"
-        Height="250"
-        Width="300">
+        xmlns:vm="clr-namespace:StopwatchWpf.ViewModels"
+        Title="Stopwatch" Height="250" Width="300">
+
+    <!-- DataContext を XAML から削除 -->
 
     <StackPanel Margin="20" VerticalAlignment="Center">
 
+        <!-- 固定幅フォントで 0.01 秒まで表示 -->
         <TextBlock Text="{Binding ElapsedText}"
+                   FontFamily="Fira Code"
                    FontSize="40"
                    FontWeight="Bold"
                    HorizontalAlignment="Center"
                    Margin="0,0,0,20"/>
-
+        
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Content="Start" Width="70" Margin="5"
                     Command="{Binding StartCommand}"/>

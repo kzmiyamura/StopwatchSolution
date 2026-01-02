@@ -1,68 +1,38 @@
-﻿using StopwatchLogic;
-using System;
+﻿using System;
+using System.Diagnostics;
 using System.Threading;
 
 namespace StopwatchConsole
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            var stopwatch = new HighPrecisionStopwatchV2();
+            // 高精度ストップウォッチ
+            var stopwatch = new Stopwatch();
 
-            bool isRunning = false;
-            bool exitRequested = false;
+            // 最初にカーソル位置を固定
+            Console.Clear();
+            int left = 10;  // 水平方向の開始位置
+            int top = 5;    // 垂直方向の開始位置
+            Console.SetCursorPosition(left, top);
 
-            Console.CursorVisible = false;
+            stopwatch.Start();
 
-            while (!exitRequested)
+            while (true)
             {
-                // キー入力処理
-                if (Console.KeyAvailable)
-                {
-                    var key = Console.ReadKey(true).Key;
+                var ts = stopwatch.Elapsed;
 
-                    switch (key)
-                    {
-                        case ConsoleKey.Spacebar:
-                            if (isRunning)
-                            {
-                                stopwatch.Stop();
-                                isRunning = false;
-                            }
-                            else
-                            {
-                                stopwatch.Start();
-                                isRunning = true;
-                            }
-                            break;
+                // 表示文字列を固定幅に揃える
+                string text = $"{ts.Minutes:D2}:{ts.Seconds:D2}.{ts.Milliseconds / 100:D1}";
+                text = text.PadLeft(7); // 常に7文字幅に揃える
 
-                        case ConsoleKey.Backspace: // mac対応
-                            stopwatch.Reset();
-                            isRunning = false;
-                            break;
+                // 同じ位置に書き込む
+                Console.SetCursorPosition(left, top);
+                Console.Write(text);
 
-                        case ConsoleKey.Enter:
-                            exitRequested = true;
-                            break;
-                    }
-                }
-
-                // 表示
-                Console.SetCursorPosition(0, 0);
-                Console.WriteLine(FormatTime(stopwatch.GetElapsedSeconds()));
-                Console.WriteLine("Space: Start/Stop  Backspace: Reset  Enter: Exit");
-
-                Thread.Sleep(100); // 0.1秒更新
+                Thread.Sleep(10); // 0.01秒更新
             }
-
-            Console.CursorVisible = true;
-        }
-
-        static string FormatTime(double seconds)
-        {
-            var time = TimeSpan.FromSeconds(seconds);
-            return $"{time.Minutes:D2}:{time.Seconds:D2}.{time.Milliseconds / 100:D1}";
         }
     }
 }

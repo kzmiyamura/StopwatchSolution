@@ -26,7 +26,7 @@ namespace StopwatchWpf
                         context.Configuration.GetSection("Stopwatch"));
 
                     // logic
-                    services.AddSingleton<IStopwatch, HighPrecisionStopwatchV2>();
+                    services.AddSingleton<IStopwatch, HighPrecisionStopwatchV3>();
 
                     // viewmodel
                     services.AddSingleton<MainViewModel>();
@@ -39,11 +39,9 @@ namespace StopwatchWpf
 
         protected override async void OnStartup(StartupEventArgs e)
         {
-            if (AppHost is null)
-                throw new InvalidOperationException("AppHost is not initialized.");
+            await AppHost!.StartAsync();
 
-            await AppHost.StartAsync();
-
+            // DI 経由で MainWindow を取得
             var mainWindow = AppHost.Services.GetRequiredService<MainWindow>();
             mainWindow.Show();
 

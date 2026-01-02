@@ -12,15 +12,15 @@ namespace StopwatchWpf.ViewModels
     public class MainViewModel : INotifyPropertyChanged
     {
         private readonly IStopwatch _stopwatch;
-        private readonly DispatcherTimer _timer;
-        private readonly int _intervalMs;
+        private readonly Dispatcher _uiDispatcher;
 
-        private string _elapsedText = "00:00.0";
+        private string _elapsedText = "00:00.00"; // 0.01 秒まで表示
         public string ElapsedText
         {
             get => _elapsedText;
             private set
             {
+                if (_elapsedText == value) return; // 変更なしなら無視
                 _elapsedText = value;
                 OnPropertyChanged();
             }
@@ -32,50 +32,40 @@ namespace StopwatchWpf.ViewModels
 
         public MainViewModel(
             IStopwatch stopwatch,
-            IOptions<StopwatchSettings> settings)
+            IOptions<StopwatchSettings>? settings = null) // optional for DI
         {
             _stopwatch = stopwatch;
-            _intervalMs = settings.Value.UpdateIntervalMs;
-
-            _timer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromMilliseconds(_intervalMs)
-            };
-            _timer.Tick += (_, _) => UpdateTime();
+            _uiDispatcher = Dispatcher.CurrentDispatcher;
 
             StartCommand = new RelayCommand(Start);
             StopCommand = new RelayCommand(Stop);
             ResetCommand = new RelayCommand(Reset);
+
+            if (_stopwatch is HighPrecisionStopwatchV3 hp)
+            {
+                hp.ElapsedChanged += () =>
+                {
+                    // UI スレッドで安全に更新
+                    _uiDispatcher.Invoke(() =>
+                    {
+                        ElapsedText = FormatTime(hp.ElapsedSeconds);
+                    });
+                };
+            }
         }
 
-        private void Start()
-        {
-            _stopwatch.Start();
-            _timer.Start();
-        }
-
-        private void Stop()
-        {
-            _stopwatch.Stop();
-            _timer.Stop();
-            UpdateTime();
-        }
-
+        private void Start() => _stopwatch.Start();
+        private void Stop() => _stopwatch.Stop();
         private void Reset()
         {
             _stopwatch.Reset();
-            UpdateTime();
-        }
-
-        private void UpdateTime()
-        {
-            ElapsedText = FormatTime(_stopwatch.ElapsedSeconds);
+            ElapsedText = "00:00.00";
         }
 
         private static string FormatTime(double seconds)
         {
             var time = TimeSpan.FromSeconds(seconds);
-            return $"{time.Minutes:D2}:{time.Seconds:D2}.{time.Milliseconds / 100:D1}";
+            return $"{time.Minutes:D2}:{time.Seconds:D2}.{time.Milliseconds / 10:D2}";
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

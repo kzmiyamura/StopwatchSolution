@@ -1,14 +1,19 @@
 ﻿using System.Windows;
 using StopwatchWpf.ViewModels;
+using StopwatchLogic;
+using Microsoft.Extensions.Options;
+using StopwatchWpf.Settings;
 
 namespace StopwatchWpf
 {
     public partial class MainWindow : Window
     {
-        public MainWindow(MainViewModel viewModel)
+        public MainWindow(IStopwatch stopwatch, IOptions<StopwatchSettings> settings)
         {
             InitializeComponent();
-            DataContext = viewModel;
+
+            // ViewModel に依存性注入されたパラメータを渡す
+            DataContext = new MainViewModel(stopwatch, settings);
         }
     }
 }
